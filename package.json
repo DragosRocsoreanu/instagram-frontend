@@ -1,0 +1,36 @@
+{
+  "name": "frontend",
+  "version": "0.0.1",
+  "description": "A Quasar Framework app",
+  "productName": "Quasar App",
+  "cordovaId": "org.cordova.quasar.app",
+  "author": "",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@quasar/extras": "^1.0.0",
+    "apollo-boost": "^0.1.28",
+    "graphql": "^14.1.1",
+    "quasar": "^1.0.0-beta.3",
+    "vue-apollo": "^3.0.0-beta.28"
+  },
+  "devDependencies": {
+    "@quasar/app": "^1.0.0-beta.7",
+    "strip-ansi": "=3.0.1"
+  },
+  "engines": {
+    "node": ">= 8.9.0",
+    "npm": ">= 5.6.0",
+    "yarn": ">= 1.6.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ],
+  "resolutions": {
+    "ajv": "6.8.1"
+  }
+}
