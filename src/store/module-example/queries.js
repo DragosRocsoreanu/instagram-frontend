@@ -39,6 +39,33 @@ query{
 
 // Posts Mutations
 
+export const ADD_POST = gql`
+mutation(
+	$title: String!,
+	$imageUrl: String!,
+	$categories: [String]!,
+	$description: String!,
+	$creatorId:ID!
+) {
+	addPost(
+		title: $title,
+		imageUrl: $imageUrl,
+		categories: $categories,
+		description: $description
+		creatorId: $creatorId
+	) {
+		createdBy {
+			_id
+		}
+		title
+		imageUrl
+		categories
+		description
+		createdDate
+	}
+}
+`
+
 // User Mutations
 
 export const SIGNIN_USER = gql`

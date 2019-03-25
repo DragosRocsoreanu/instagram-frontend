@@ -17,7 +17,7 @@
 				 label="Username"
 				 hint="Type in your username"
 				 lazy-rules
-				 :rules="[ val => val && val.length > 0 || 'Please type something']"
+				 :rules="[ val => val && val.length > 3 || 'Please type something']"
 				/>
 
 				<q-input
@@ -28,7 +28,7 @@
 				 label="Password"
 				 hint="Type in your password"
 				 lazy-rules
-				 :rules="[ val => val && val.length > 0 || 'Please type something']"
+				 :rules="[ val => val && val.length > 3 || 'Please type something']"
 				/>
 
 				<q-toggle
@@ -39,6 +39,7 @@
 				<div>
 					<q-btn
 					 label="Submit"
+					 :loading="loading"
 					 type="submit"
 					 color="primary"
 					/>
@@ -60,24 +61,34 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
 	name: "SignIn",
 	data() {
 		return {
 			username: null,
 			password: null,
-
-			accept: false
+			accept: false,
+			loading: false
 		};
 	},
 
+	computed: {
+		...mapGetters({ user: "example/user" })
+	},
+
+	// watch: {
+	// 	user(value) {
+	// 		console.log(value);
+	// 		// if user value change, redirect to home page
+	// 		if (value) {
+	// 			this.$router.push("/");
+	// 		}
+	// 	}
+	// },
+
 	methods: {
-		// handleSigninUser() {
-		// 	this.$store.dispatch("signinUser", {
-		// 		username: this.username,
-		// 		password: this.password
-		// 	});
-		// },
 		onSubmit() {
 			this.$refs.username.validate();
 			this.$refs.password.validate();
@@ -90,17 +101,33 @@ export default {
 					message: "You need to accept the license and terms first"
 				});
 			} else {
-				this.$store.dispatch("example/signinUser", {
-					username: this.username,
-					password: this.password
-				});
-				this.$q.notify({
-					icon: "done",
-					color: "positive",
-					message: "Submitted"
-				});
+				this.loading = true;
+				this.$store
+					.dispatch("example/signinUser", {
+						username: this.username,
+						password: this.password
+					})
+					.then(user => {
+						this.loading = false;
+						this.$q.notify({
+							icon: "done",
+							color: "positive",
+							message: "Success"
+						});
+						// this.$store.dispatch("example/getCurrentUser");
+						this.$router.push("/");
+					})
+					.catch(err => {
+						this.loading = false;
+						this.$q.notify({
+							icon: "warning",
+							color: "negative",
+							message: err.message
+						});
+					});
 			}
 		},
+
 		onReset() {
 			this.username = null;
 			this.password = null;

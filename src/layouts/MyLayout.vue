@@ -66,7 +66,7 @@
 
 				<!-- Toolbar Menu Start -->
 				<q-list
-				 v-for="(menuItem,index) in menuList"
+				 v-for="(menuItem,index) in nav"
 				 :key="index"
 				 class="col-auto gt-xs"
 				>
@@ -91,6 +91,23 @@
 
 				</q-list>
 
+				<q-item
+				 v-if="user"
+				 clickable
+				 @click="signoutUser"
+				 v-ripple
+				>
+					<q-item-section
+					 avatar
+					 class="gt-sm"
+					>
+						<q-icon name="exit_to_app" />
+					</q-item-section>
+					<q-item-section>
+						Sign Out
+					</q-item-section>
+				</q-item>
+
 			</q-toolbar>
 		</q-header>
 
@@ -104,7 +121,7 @@
 		>
 			<div class="fit">
 				<q-list
-				 v-for="(menuItem,index) in menuList"
+				 v-for="(menuItem,index) in nav"
 				 :key="index"
 				>
 
@@ -122,9 +139,25 @@
 						</q-item-section>
 					</q-item>
 
-					<q-separator v-if="menuItem.separator" />
+					<!-- <q-separator v-if="menuItem.separator" /> -->
 
 				</q-list>
+				<q-item
+				 v-if="user"
+				 clickable
+				 @click="signoutUser"
+				 v-ripple
+				>
+					<q-item-section
+					 avatar
+					 class="gt-sm"
+					>
+						<q-icon name="exit_to_app" />
+					</q-item-section>
+					<q-item-section>
+						Sign Out
+					</q-item-section>
+				</q-item>
 			</div>
 		</q-drawer>
 
@@ -142,25 +175,27 @@
 </template>
 
 <script>
-const menuList = [
-	{
-		icon: "chat",
-		title: "Posts",
-		link: "/posts"
-	},
-	{
-		icon: "lock_open",
-		title: "Sign In",
-		link: "/signin"
-	},
-	{
-		icon: "create",
-		title: "Sign Up",
-		link: "/signup"
-	}
-];
+import { mapGetters } from "vuex";
 
-const home = "/";
+// const menuList = [
+// 	{
+// 		icon: "chat",
+// 		title: "Posts",
+// 		link: "/posts"
+// 	},
+// 	{
+// 		icon: "lock_open",
+// 		title: "Sign In",
+// 		link: "/signin"
+// 	},
+// 	{
+// 		icon: "create",
+// 		title: "Sign Up",
+// 		link: "/signup"
+// 	}
+// ];
+
+// const home = "/";
 
 export default {
 	data() {
@@ -168,9 +203,62 @@ export default {
 			drawer: false,
 			activeLink: "VueShare",
 			search: "",
-			home,
-			menuList
+			home: "/"
 		};
+	},
+
+	computed: {
+		...mapGetters({ user: "example/user" }),
+		nav() {
+			let menuList = [
+				{
+					icon: "chat",
+					title: "Posts",
+					link: "/posts"
+				},
+				{
+					icon: "lock_open",
+					title: "Sign In",
+					link: "/signin"
+				},
+				{
+					icon: "create",
+					title: "Sign Up",
+					link: "/signup"
+				}
+			];
+			if (this.user) {
+				menuList = [
+					{
+						icon: "chat",
+						title: "Posts",
+						link: "/posts"
+					},
+					{
+						icon: "stars",
+						title: "Create Post",
+						link: "/post/add"
+					},
+					{
+						icon: "account_box",
+						title: "Profile",
+						link: "/profile"
+					}
+					// {
+					// 	icon: "exit_to_app",
+					// 	title: "SignOut",
+					// 	link: "/signout"
+					// }
+				];
+			}
+			return menuList;
+		}
+	},
+
+	methods: {
+		signoutUser() {
+			this.$store.dispatch("example/signoutUser");
+		}
 	}
 };
 </script>

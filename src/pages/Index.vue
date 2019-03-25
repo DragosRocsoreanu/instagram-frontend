@@ -16,12 +16,13 @@
 			<q-carousel
 			 arrows
 			 animated
+			 infinite
 			 v-model="slide"
 			>
 				<q-carousel-slide
-				 :name="1"
-				 v-for="post in posts"
-				 :key="post.createdBy._id"
+				 v-for="(post,index) in posts"
+				 :name="index"
+				 :key="index"
 				 :img-src="post.imageUrl"
 				>
 					<div class="absolute-bottom custom-caption">
